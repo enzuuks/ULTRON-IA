@@ -1,251 +1,359 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ULTRON AI</title>
+
 <style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: #090a0d;
-  color: #e5e7eb;
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  display: flex;
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090a0d;color:#e5e7eb;
+ font-family:Arial,sans-serif;height:100vh;
+ display:flex;overflow:hidden
 }
-.sidebar {
-  width: 250px;
-  background: #101216;
-  border-right: 1px solid #292d33;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
+button{cursor:pointer;color:inherit;font:inherit}
+.sidebar{
+ width:270px;background:#101216;
+ border-right:1px solid #292d33;
+ padding:20px;display:flex;flex-direction:column;
+ gap:20px;flex-shrink:0;transition:.2s
 }
-.brand { display:flex; align-items:center; gap:12px; }
-.logo {
-  width: 40px; height: 40px;
-  border: 2px solid #c0c4ca;
-  border-radius: 50%;
-  display:grid; place-items:center;
-  color:#d9dde2;
-  font-size:20px;
+.brand{display:flex;align-items:center;gap:12px}
+.logo,.big-logo{
+ border:2px solid #c0c4ca;border-radius:50%;
+ display:grid;place-items:center;color:#e5e7eb;
 }
-.brand strong { font-size:18px; letter-spacing:2px; }
-button {
-  cursor:pointer;
-  color:inherit;
-  background:transparent;
-  border:0;
+.logo{width:40px;height:40px;font-size:21px}
+.brand strong{letter-spacing:3px;font-size:18px}
+.new-chat{
+ background:#20242a;border:1px solid #41464e;
+ padding:13px;border-radius:9px;text-align:left
 }
-.new-chat {
-  background:#20242a;
-  border:1px solid #41464e;
-  padding:13px;
-  border-radius:9px;
-  text-align:left;
+.new-chat:hover,.history-item:hover{background:#292e35}
+.section{
+ color:#777f8a;font-size:11px;letter-spacing:2px
 }
-.section { color:#777f8a; font-size:11px; letter-spacing:2px; }
-.history { color:#bfc4cc; padding:9px 4px; font-size:13px; }
-.profile {
-  margin-top:auto;
-  border-top:1px solid #292d33;
-  padding-top:18px;
-  color:#c4c9d0;
+.history-list{display:flex;flex-direction:column;gap:5px;overflow-y:auto}
+.history-item{
+ padding:11px;border-radius:8px;font-size:13px;
+ color:#c4c9d0;display:flex;justify-content:space-between;
+ align-items:center;gap:5px;cursor:pointer
 }
-.main {
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
+.history-item.active{background:#292e35}
+.history-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.delete{
+ color:#858d98;background:transparent;border:0;
+ padding:4px;font-size:17px
 }
-.topbar {
-  height:65px;
-  border-bottom:1px solid #292d33;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
+.delete:hover{color:#fff}
+.profile{
+ margin-top:auto;border-top:1px solid #292d33;
+ padding-top:18px;color:#c4c9d0;font-size:13px
 }
-.status { color:#aeb4bc; font-size:12px; }
-.center {
-  flex:1;
-  overflow-y:auto;
-  width:100%;
-  max-width:850px;
-  margin:auto;
-  padding:35px 25px;
-  display:flex;
-  flex-direction:column;
-  gap:22px;
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+ height:65px;border-bottom:1px solid #292d33;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 24px;flex-shrink:0
 }
-.welcome {
-  text-align:center;
-  margin:35px 0 15px;
+.topbar strong{letter-spacing:2px}
+.status{color:#aeb4bc;font-size:11px}
+.center{
+ flex:1;overflow-y:auto;width:100%;max-width:900px;
+ margin:0 auto;padding:35px 25px;
+ display:flex;flex-direction:column;gap:18px
 }
-.big-logo {
-  width:82px; height:82px;
-  border:2px solid #c0c4ca;
-  border-radius:50%;
-  background:#08090b;
-  display:grid;
-  place-items:center;
-  margin:auto auto 18px;
-  font-size:38px;
+.welcome{text-align:center;margin:auto 0 20px}
+.big-logo{
+ width:85px;height:85px;margin:0 auto 20px;
+ font-size:39px;background:#08090b
 }
-.welcome h1 {
-  letter-spacing:5px;
-  font-size:27px;
-  margin:0;
+.welcome h1{letter-spacing:6px;font-size:29px;margin:0}
+.welcome p{color:#858d98;font-size:10px;letter-spacing:3px}
+.message{
+ max-width:80%;padding:14px 17px;border-radius:12px;
+ line-height:1.6;font-size:14px;overflow-wrap:anywhere;
+ white-space:pre-wrap
 }
-.welcome p {
-  color:#858d98;
-  font-size:11px;
-  letter-spacing:3px;
+.bot{background:#1b1e23;align-self:flex-start}
+.user{background:#30343a;align-self:flex-end}
+.composer{
+ width:100%;max-width:900px;margin:0 auto 18px;
+ padding:0 25px;flex-shrink:0
 }
-.message {
-  max-width:80%;
-  padding:14px 17px;
-  border-radius:12px;
-  line-height:1.5;
-  font-size:14px;
+.input-box{
+ background:#191c21;border:1px solid #555b64;
+ border-radius:13px;padding:12px 15px
 }
-.bot { background:#1b1e23; align-self:flex-start; }
-.user { background:#30343a; align-self:flex-end; }
-.composer {
-  width:100%;
-  max-width:850px;
-  margin:0 auto 25px;
-  padding:0 25px;
+textarea{
+ width:100%;resize:none;background:transparent;color:white;
+ border:0;outline:0;font:14px Arial;min-height:38px;
+ max-height:150px
 }
-.input-box {
-  background:#191c21;
-  border:1px solid #555b64;
-  border-radius:13px;
-  padding:12px 15px;
+.actions{display:flex;justify-content:space-between;align-items:center}
+.attach{color:#aeb4bc;background:transparent;border:0;font-size:20px}
+.send{
+ background:#d1d5db;color:#111318;border-radius:8px;
+ padding:9px 16px;font-weight:bold;border:0
 }
-textarea {
-  width:100%;
-  resize:none;
-  background:transparent;
-  color:white;
-  border:0;
-  outline:0;
-  font:14px Arial;
-  min-height:35px;
-}
-.actions {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  color:#aeb4bc;
-}
-.send {
-  background:#d1d5db;
-  color:#111318;
-  border-radius:8px;
-  padding:9px 15px;
-  font-weight:bold;
-}
-.footer {
-  text-align:center;
-  color:#737b85;
-  font-size:10px;
-  padding-bottom:12px;
-}
-@media(max-width:650px) {
-  .sidebar { width:65px; padding:12px 8px; align-items:center; }
-  .brand strong,.section,.history,.profile span { display:none; }
-  .new-chat { text-align:center; padding:12px 8px; }
-  .topbar { padding:0 14px; }
-  .center { padding:20px 14px; }
-  .composer { padding:0 12px; }
+.send:hover{background:#fff}
+.footer{text-align:center;color:#737b85;font-size:10px;padding-bottom:12px}
+.menu{display:none;background:transparent;border:0;font-size:22px}
+.empty{color:#777f8a;font-size:12px;padding:5px}
+@media(max-width:650px){
+ .sidebar{
+  position:absolute;z-index:5;top:0;bottom:0;left:-280px;
+  width:270px
+ }
+ .sidebar.open{left:0}
+ .menu{display:block}
+ .topbar{padding:0 14px}
+ .center{padding:20px 14px}
+ .composer{padding:0 12px}
+ .message{max-width:90%}
 }
 </style>
 </head>
+
 <body>
 
-<aside class="sidebar">
-  <div class="brand">
-    <div class="logo">◉</div>
-    <strong>ULTRON</strong>
-  </div>
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="logo">◉</div>
+  <strong>ULTRON</strong>
+ </div>
 
-  <button class="new-chat" onclick="newChat()">＋ Nova conversa</button>
+ <button class="new-chat" onclick="newChat()">＋ Nova conversa</button>
 
-  <div class="section">HISTÓRICO</div>
-  <div id="history"></div>
+ <div class="section">HISTÓRICO DE CONVERSAS</div>
+ <div class="history-list" id="history"></div>
 
-  <div class="profile">◉ <span>Meu perfil</span></div>
+ <div class="profile">◉ &nbsp; Meu perfil<br>
+  <small style="color:#737b85">ULTRON AI • 1.0</small>
+ </div>
 </aside>
 
 <main class="main">
-  <header class="topbar">
-    <strong>ULTRON AI</strong>
-    <div class="status">● SISTEMA</div>
-  </header>
-
-  <section class="center" id="messages">
-    <div class="welcome" id="welcome">
-      <div class="big-logo">◉</div>
-      <h1>ULTRON</h1>
-      <p>INTELIGÊNCIA ARTIFICIAL AVANÇADA</p>
-    </div>
-    <div class="message bot">
-      Olá. Sou o ULTRON. Estou pronto para iniciar uma conversa.
-    </div>
-  </section>
-
-  <div class="composer">
-    <div class="input-box">
-      <textarea id="input" placeholder="Converse com o ULTRON..."
-      rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
-      <div class="actions">
-        <span>＋ &nbsp; ◉</span>
-        <button class="send" onclick="sendMessage()">Enviar ↑</button>
-      </div>
-    </div>
+ <header class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+   <button class="menu" onclick="toggleSidebar()">☰</button>
+   <strong>ULTRON AI</strong>
   </div>
+  <div class="status">● INTERFACE ATIVA</div>
+ </header>
 
-  <div class="footer">ULTRON AI • PRETO E PRATA</div>
+ <section class="center" id="messages"></section>
+
+ <div class="composer">
+  <div class="input-box">
+   <textarea id="input" placeholder="Converse com o ULTRON..."
+    rows="1"></textarea>
+   <div class="actions">
+    <button class="attach" title="Anexar imagem"
+     onclick="document.getElementById('file').click()">＋</button>
+    <input type="file" id="file" accept="image/*" hidden>
+    <button class="send" onclick="sendMessage()">Enviar ↑</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="footer">ULTRON AI • PRETO E PRATA</div>
 </main>
 
 <script>
-function sendMessage() {
-  const input = document.getElementById("input");
-  const messages = document.getElementById("messages");
-  const text = input.value.trim();
-  if (!text) return;
+const STORAGE = "ultron_conversations_v1";
 
-  document.getElementById("welcome").style.display = "none";
+let conversations = JSON.parse(localStorage.getItem(STORAGE) || "[]");
+let currentId = null;
+let selectedImage = null;
 
-  const bubble = document.createElement("div");
-  bubble.className = "message user";
-  bubble.textContent = text;
-  messages.appendChild(bubble);
+const messages = document.getElementById("messages");
+const historyBox = document.getElementById("history");
+const input = document.getElementById("input");
 
-  input.value = "";
-  messages.scrollTop = messages.scrollHeight;
-
-  const history = document.getElementById("history");
-  const item = document.createElement("div");
-  item.className = "history";
-  item.textContent = text.slice(0, 25);
-  history.prepend(item);
+function save(){
+ localStorage.setItem(STORAGE,JSON.stringify(conversations));
 }
 
-function newChat() {
-  document.getElementById("messages").innerHTML = `
-    <div class="welcome" id="welcome">
-      <div class="big-logo">◉</div>
-      <h1>ULTRON</h1>
-      <p>INTELIGÊNCIA ARTIFICIAL AVANÇADA</p>
-    </div>
-    <div class="message bot">
-      Nova conversa iniciada. Estou pronto.
-    </div>`;
+function createId(){
+ return Date.now().toString(36)+Math.random().toString(36).slice(2);
 }
+
+function newChat(){
+ const chat={
+  id:createId(),
+  title:"Nova conversa",
+  messages:[]
+ };
+ conversations.unshift(chat);
+ currentId=chat.id;
+ save();
+ renderHistory();
+ renderMessages();
+ document.getElementById("sidebar").classList.remove("open");
+ input.focus();
+}
+
+function getCurrent(){
+ return conversations.find(c=>c.id===currentId);
+}
+
+function openChat(id){
+ currentId=id;
+ renderHistory();
+ renderMessages();
+ document.getElementById("sidebar").classList.remove("open");
+}
+
+function deleteChat(id,event){
+ event.stopPropagation();
+ conversations=conversations.filter(c=>c.id!==id);
+ if(currentId===id) currentId=null;
+ save();
+ if(!currentId && conversations.length) currentId=conversations[0].id;
+ renderHistory();
+ renderMessages();
+}
+
+function renderHistory(){
+ historyBox.innerHTML="";
+ if(!conversations.length){
+  historyBox.innerHTML='<div class="empty">Nenhuma conversa ainda.</div>';
+  return;
+ }
+
+ conversations.forEach(chat=>{
+  const item=document.createElement("div");
+  item.className="history-item"+(chat.id===currentId?" active":"");
+  item.onclick=()=>openChat(chat.id);
+
+  const title=document.createElement("span");
+  title.className="history-title";
+  title.textContent=chat.title;
+
+  const del=document.createElement("button");
+  del.className="delete";
+  del.textContent="×";
+  del.title="Excluir conversa";
+  del.onclick=e=>deleteChat(chat.id,e);
+
+  item.append(title,del);
+  historyBox.appendChild(item);
+ });
+}
+
+function renderMessages(){
+ messages.innerHTML="";
+ const chat=getCurrent();
+
+ if(!chat || !chat.messages.length){
+  const welcome=document.createElement("div");
+  welcome.className="welcome";
+  welcome.innerHTML=`
+   <div class="big-logo">◉</div>
+   <h1>ULTRON</h1>
+   <p>INTELIGÊNCIA ARTIFICIAL AVANÇADA</p>
+  `;
+  messages.appendChild(welcome);
+
+  addBubble("Olá. Sou o ULTRON. Estou pronto para iniciar uma conversa.","bot",false);
+ }else{
+  chat.messages.forEach(m=>{
+   addBubble(m.text,m.role,false);
+   if(m.image){
+    const img=document.createElement("img");
+    img.src=m.image;
+    img.style.maxWidth="220px";
+    img.style.borderRadius="10px";
+    messages.appendChild(img);
+   }
+  });
+ }
+ messages.scrollTop=messages.scrollHeight;
+}
+
+function addBubble(text,role,scroll=true){
+ const bubble=document.createElement("div");
+ bubble.className="message "+role;
+ bubble.textContent=text;
+ messages.appendChild(bubble);
+ if(scroll) messages.scrollTop=messages.scrollHeight;
+}
+
+function sendMessage(){
+ const text=input.value.trim();
+ if(!text && !selectedImage)return;
+
+ if(!currentId)newChat();
+ const chat=getCurrent();
+
+ if(chat.title==="Nova conversa" && text){
+  chat.title=text.slice(0,28)+(text.length>28?"...":"");
+ }
+
+ chat.messages.push({
+  role:"user",
+  text:text || "Imagem enviada",
+  image:selectedImage
+ });
+
+ const image=selectedImage;
+ input.value="";
+ input.style.height="38px";
+ selectedImage=null;
+
+ save();
+ renderHistory();
+ renderMessages();
+
+ setTimeout(()=>{
+  if(!conversations.find(c=>c.id===chat.id))return;
+  chat.messages.push({
+   role:"bot",
+   text:"Mensagem recebida. A interface do ULTRON está funcionando, mas a inteligência artificial ainda precisa ser conectada a um servidor de IA para gerar respostas reais."
+  });
+  save();
+  if(currentId===chat.id)renderMessages();
+ },400);
+}
+
+input.addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
+});
+
+input.addEventListener("input",()=>{
+ input.style.height="38px";
+ input.style.height=Math.min(input.scrollHeight,150)+"px";
+});
+
+document.getElementById("file").addEventListener("change",e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ if(!file.type.startsWith("image/"))return;
+
+ const reader=new FileReader();
+ reader.onload=()=>{
+  selectedImage=reader.result;
+  input.placeholder="Imagem selecionada. Escreva uma mensagem...";
+ };
+ reader.readAsDataURL(file);
+ e.target.value="";
+});
+
+function toggleSidebar(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+
+if(conversations.length){
+ currentId=conversations[0].id;
+}
+renderHistory();
+renderMessages();
 </script>
 
 </body>
